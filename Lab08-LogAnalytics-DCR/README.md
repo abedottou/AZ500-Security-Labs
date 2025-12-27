@@ -6,7 +6,7 @@ Implement monitoring and log collection from Azure VMs using **Azure Monitor Age
 
 ## 🏗️ Architecture
 
-![Architecture](./diagrams/log-analytics-dcr-architecture.png)
+![Architecture](./log-analytics-dcr-architecture.png)
 
 **Components:**
 - Azure VM: myVM (Windows Server 2022)

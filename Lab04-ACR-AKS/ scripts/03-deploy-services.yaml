@@ -1,0 +1,99 @@
+# Lab 04 - Deploy External and Internal Services
+# Description: NGINX services with public and private load balancers
+
+---
+# External Service (Public Load Balancer)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxexternal
+  labels:
+    app: nginxexternal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginxexternal
+  template:
+    metadata:
+      labels:
+        app: nginxexternal
+    spec:
+      containers:
+      - name: nginx
+        image: <ACR_NAME>.azurecr.io/nginx:v1
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginxexternal
+  labels:
+    app: nginxexternal
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginxexternal
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+---
+# Internal Service (Private Load Balancer)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxinternal
+  labels:
+    app: nginxinternal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginxinternal
+  template:
+    metadata:
+      labels:
+        app: nginxinternal
+    spec:
+      containers:
+      - name: nginx
+        image: <ACR_NAME>.azurecr.io/nginx:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: SERVICE_TYPE
+          value: "INTERNAL"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginxinternal
+  labels:
+    app: nginxinternal
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginxinternal
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

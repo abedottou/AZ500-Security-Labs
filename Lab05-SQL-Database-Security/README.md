@@ -6,7 +6,7 @@ Review and implement comprehensive security features for **Azure SQL Database**,
 
 ## 🏗️ Architecture
 
-![Architecture Diagram](./diagrams/sql-database-security-architecture.png)
+![Architecture Diagram](./sql-database-security-architecture.png)
 
 ### Components:
 - **Azure SQL Server**: Managed database server (az500l11xxxx)

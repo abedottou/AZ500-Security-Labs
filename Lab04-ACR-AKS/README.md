@@ -6,7 +6,7 @@ Deploy a secure containerized application using **Azure Container Registry (ACR)
 
 ## 🏗️ Architecture
 
-![Architecture Diagram](./diagrams/acr-aks-security-architecture.png)
+![Architecture Diagram](./acr-aks-security-architecture.png)
 
 ### Components:
 - **Azure Container Registry (ACR)**: Private Docker image repository

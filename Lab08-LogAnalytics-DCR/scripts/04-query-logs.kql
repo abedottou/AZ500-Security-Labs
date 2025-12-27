@@ -1,0 +1,65 @@
+// Lab 08 - KQL Queries for Log Analytics
+
+// ========================================
+// Query 1: View all performance data
+// ========================================
+Perf
+| take 100
+
+// ========================================
+// Query 2: CPU performance over time
+// ========================================
+Perf
+| where ObjectName == "Processor" and CounterName == "% Processor Time"
+| where InstanceName == "_Total"
+| project TimeGenerated, Computer, CounterValue
+| sort by TimeGenerated desc
+
+// ========================================
+// Query 3: Memory usage
+// ========================================
+Perf
+| where ObjectName == "Memory"
+| where CounterName == "Available Bytes" or CounterName == "% Committed Bytes In Use"
+| project TimeGenerated, Computer, CounterName, CounterValue
+| sort by TimeGenerated desc
+
+// ========================================
+// Query 4: Disk performance
+// ========================================
+Perf
+| where ObjectName == "LogicalDisk"
+| where InstanceName == "_Total"
+| project TimeGenerated, Computer, CounterName, CounterValue
+| sort by TimeGenerated desc
+
+// ========================================
+// Query 5: Network performance
+// ========================================
+Perf
+| where ObjectName == "Network Interface"
+| project TimeGenerated, Computer, CounterName, CounterValue
+| sort by TimeGenerated desc
+
+// ========================================
+// Query 6: Average CPU over 5 minutes
+// ========================================
+Perf
+| where ObjectName == "Processor" and CounterName == "% Processor Time"
+| where InstanceName == "_Total"
+| summarize AvgCPU = avg(CounterValue) by bin(TimeGenerated, 5m)
+| render timechart
+
+// ========================================
+// Query 7: Count of metrics by object
+// ========================================
+Perf
+| summarize Count = count() by ObjectName
+
+// ========================================
+// Query 8: Latest metric for each counter
+// ========================================
+Perf
+| summarize arg_max(TimeGenerated, CounterValue) by ObjectName, CounterName, Computer
+| project Computer, ObjectName, CounterName, CounterValue, TimeGenerated
+| sort by TimeGenerated desc

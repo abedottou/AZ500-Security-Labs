@@ -6,7 +6,7 @@ Enable and configure **Microsoft Defender for Servers Plan 2** to provide advanc
 
 ## 🏗️ Architecture
 
-![Architecture](./diagrams/defender-for-cloud-architecture.png)
+![Architecture](./defender-for-cloud-architecture.png)
 
 **Components:**
 - Azure Subscription (protected scope)
